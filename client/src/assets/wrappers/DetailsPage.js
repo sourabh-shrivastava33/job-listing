@@ -132,13 +132,17 @@ const Wrapper = styled.section`
   }
   @media (max-width: 640px) {
     .head {
-      padding: 1rem 1.5rem;
+      padding: 0;
       h4 {
         font-size: 1.3rem;
       }
     }
+    .body {
+      padding: 1rem;
+    }
     .small-brief {
-      justify-content: space-between;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .location {
       justify-content: center;

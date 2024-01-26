@@ -108,9 +108,21 @@ export const Wrapper = styled.section`
   }
   @media (max-width: 620px) {
     header {
-      .nav-container {
-        width: var(--fluid-width);
+      .logo {
+        font-size: 1.4rem;
       }
+
+      .nav-container {
+        gap: 1rem;
+      }
+      .login-btn,
+      .register-btn {
+        padding: 0.3rem 0.6rem;
+      }
+    }
+    .user-header {
+      gap: 0;
+      font-size: 0.9rem;
     }
   }
 `;

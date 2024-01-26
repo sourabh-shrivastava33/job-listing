@@ -142,9 +142,15 @@ const Wrapper = styled.div`
     .flag-img {
       width: 42px;
     }
+
     .company-brief {
+      .position {
+        text-align: center;
+      }
       ul {
-        gap: 1rem;
+        column-gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
         li {
           gap: 0.5rem;
           span {
