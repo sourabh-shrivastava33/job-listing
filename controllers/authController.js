@@ -8,7 +8,8 @@ const {
 const { hashPassword, comparePassword } = require("../utils/password");
 const { createJwt } = require("../utils/token");
 const register = async (req, res) => {
-  const userExit = await UserModel.find({ email: req.body.email });
+  const userExit = await UserModel.findOne({ email: req.body.email });
+  console.log(userExit);
   if (userExit) throw new BadRequestError("User Already exist");
   const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;

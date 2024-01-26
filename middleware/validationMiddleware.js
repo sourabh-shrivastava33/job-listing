@@ -6,7 +6,7 @@ const {
 } = require("../errors/customError");
 const { JOB_TYPE, LOCATION_PREFERENCE } = require("../utils/constant");
 const mongoose = require("mongoose");
-const JobPostModel = require("../model/JobPostModel.js");
+const JobPostModel = require("../model/JobPostModel");
 const withValidationErrors = (validateValue) => {
   return [
     validateValue,
@@ -71,6 +71,7 @@ const validateUserRegisterInput = withValidationErrors([
     .withMessage("email is required")
     .isEmail()
     .withMessage("invalid email format"),
+
   body("mobile")
     .notEmpty()
     .withMessage("mobile no. is required")
