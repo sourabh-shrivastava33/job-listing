@@ -41,7 +41,7 @@ const EditJob = () => {
     <Wrapper>
       <div className="create-page">
         <Form className="form" method="POST" encType="multipart/form-data">
-          <h4 className="form-title">Add Job Description</h4>
+          <h4 className="form-title">Edit Job Description</h4>
           <div className="form-center">
             <FormRow
               defaultValue={job.companyName}
@@ -133,7 +133,7 @@ const EditJob = () => {
           </div>
           <div className="cta-btns">
             <button type="submit" className="btn submit-btn">
-              Add job+
+              Edit job
             </button>
             <button
               type="button"

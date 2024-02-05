@@ -17,6 +17,7 @@ import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
 import { action as addJobAction } from "./pages/AddJob";
 import { action as editJobAction } from "./pages/EditJob";
+import AuthenticateRouteComponent from "./components/AuthenticateRouteComponent";
 const router = createBrowserRouter([
   {
     path: "/register",
@@ -48,14 +49,14 @@ const router = createBrowserRouter([
   {
     path: "/edit/:editId",
     errorElement: <Error />,
-    element: <EditJob />,
+    element: <AuthenticateRouteComponent element={<EditJob />} />,
     loader: editPageLoader,
     action: editJobAction,
   },
   {
     path: "/create",
     errorElement: <Error />,
-    element: <AddJob />,
+    element: <AuthenticateRouteComponent element={<AddJob />} />,
     action: addJobAction,
   },
 ]);

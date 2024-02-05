@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const UserModel = require("../model/User");
 const { verifyJWT } = require("../utils/token");
 const { default: mongoose } = require("mongoose");
+const { BadRequestError } = require("../errors/customError");
 
 const getCurrentUser = async (req, res) => {
   if (!req.cookies.token) {
@@ -14,4 +15,15 @@ const getCurrentUser = async (req, res) => {
   const newUser = user.toJson();
   res.status(StatusCodes.OK).json({ user: newUser });
 };
-module.exports = { getCurrentUser };
+
+const getSingleUser = async (req, res) => {
+  const { userId } = req.params;
+  const user = await UserModel.findById(userId, {
+    password: 0,
+    _id: 0,
+  });
+  if (!user) throw BadRequestError(`No user with ${userId} id`);
+  res.status(StatusCodes.OK).json(user);
+};
+
+module.exports = { getCurrentUser, getSingleUser };

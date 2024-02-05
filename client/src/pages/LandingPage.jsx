@@ -23,6 +23,7 @@ export const loader = async ({ request }) => {
 const LandingPageContext = createContext();
 const LandingPage = () => {
   const { data, searchValues } = useLoaderData();
+  console.log(data);
   return (
     <Wrapper className="container">
       <LandingPageContext.Provider value={{ data, searchValues }}>

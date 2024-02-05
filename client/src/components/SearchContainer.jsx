@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useEffect, useState } from "react";
 import { Form, Link, useLocation, useNavigate } from "react-router-dom";
 import techSkillsArray from "../utils/skills";
@@ -5,26 +6,15 @@ import { useLandingPageContext } from "../pages/LandingPage";
 import SearchSkillsTag from "./SearchSkillsTag";
 import { useHomeLayoutContext } from "../pages/HomeLayout";
 import Wrapper from "../assets/wrappers/SearchContainer";
-let skillsRequiredArray;
 const SearchContainer = () => {
   const { searchValues, data: jobsData } = useLandingPageContext();
   const { data } = useHomeLayoutContext();
   const { user } = data;
-  console.log();
-  if (Object.keys(searchValues).length === 0) {
-    skillsRequiredArray = jobsData.jobs
-      .slice()
-      .map((item) => item.skillsRequired)
-      .reduce((acc, curr) => {
-        return [...acc, ...curr];
-      }, []);
-  }
 
-  useEffect(() => {}, []);
   const skillsSearchArray = searchValues?.skills?.split(",") || [];
   const [skills, setSkills] = useState(skillsSearchArray);
   const { search, pathname } = useLocation();
-  console.log(skills);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -73,7 +63,7 @@ const SearchContainer = () => {
             onChange={handleChange}
             value={skills.length >= 1 ? skills[skills.length - 1] : ""}
           >
-            {["", ...skillsRequiredArray].map((item) => {
+            {["", ...jobsData.allSkills].map((item) => {
               if (item === "")
                 return (
                   <option key="any" value="any">

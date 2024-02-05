@@ -7,6 +7,7 @@ const {
   editJobPost,
   deleteJobPost,
   getJobPost,
+  createComment,
 } = require("../controllers/jobController");
 const {
   validateJobInput,
@@ -24,6 +25,10 @@ router
     validateJobInput,
     createJobPost
   );
+
+router
+  .route("/comments/:id")
+  .patch(authenticateUser, validateParamsId, createComment);
 router
   .route("/:id")
   .get(validateParamsId, getJobPost)

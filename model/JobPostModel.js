@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { JOB_TYPE, LOCATION_PREFERENCE } = require("../utils/constant");
+const CommentSchema = require("./CommentsSchema");
 const JobPostSchema = new mongoose.Schema(
   {
     companyName: String,
@@ -32,6 +33,7 @@ const JobPostSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+    comments: [CommentSchema],
   },
   { timestamps: true }
 );

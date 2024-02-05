@@ -46,6 +46,7 @@ const Wrapper = styled.section`
 
   .logo-img {
     width: 48px;
+    border-radius: 15px;
   }
   .job-position-cont {
     display: flex;

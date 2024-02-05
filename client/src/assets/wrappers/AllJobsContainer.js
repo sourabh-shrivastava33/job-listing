@@ -5,11 +5,14 @@ const Wrapper = styled.div`
   font-family: "Dm sans";
   article {
     margin: 2rem 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 1.3rem;
     box-shadow: var(--shadow-primary);
     border-radius: var(--border-radius);
+    .brief-cont {
+      padding: 1rem 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      background-color: white;
+    }
 
     .logo-img {
       width: 3rem;
@@ -43,6 +46,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 1.2rem;
+    margin: 1rem 0;
     ul {
       display: flex;
       align-items: center;
@@ -138,6 +142,49 @@ const Wrapper = styled.div`
     }
   }
 
+  .comments-upvote {
+    align-self: flex-end;
+    svg {
+      font-size: 2rem;
+      color: var(--primary-500);
+      cursor: pointer;
+      transition: var(--transition);
+      &:hover {
+        color: var(--primary-700);
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .contOne {
+      justify-items: center;
+      grid-template-columns: 1fr;
+      grid-template-rows: 50px 1fr;
+    }
+    article {
+      .brief-cont {
+        flex-direction: column;
+        .logo-img {
+          width: 4rem;
+          height: 4rem;
+        }
+      }
+    }
+
+    .company-brief {
+      align-items: center;
+    }
+    .contTwo {
+      width: 100%;
+    }
+    .cta-btns {
+      align-self: end;
+    }
+    .skills {
+      width: 60%;
+      align-self: center;
+    }
+  }
   @media (max-width: 540px) {
     .flag-img {
       width: 42px;
@@ -160,41 +207,18 @@ const Wrapper = styled.div`
       }
     }
     .cta-btns {
+      align-self: center;
       gap: 1rem;
       button {
         padding: 0.4rem 2.1rem;
         font-size: 0.8rem;
       }
     }
-  }
-
-  @media (max-width: 992px) {
-    .contOne {
-      justify-items: center;
-      grid-template-columns: 1fr;
-      grid-template-rows: 50px 1fr;
-    }
-    article {
-      row-gap: 1rem;
-      flex-direction: column;
-      .logo-img {
-        width: 4rem;
-        height: 4rem;
-      }
-    }
-
-    .company-brief {
-      align-items: center;
-    }
-    .contTwo {
+    .skills {
       width: 100%;
     }
-    .cta-btns {
-      align-self: end;
-    }
-    .skills {
-      width: 60%;
-      align-self: center;
+    .contTwo {
+      gap: 1rem;
     }
   }
 `;

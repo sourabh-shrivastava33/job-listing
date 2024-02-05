@@ -7,6 +7,27 @@ const getAllJobPost = async (req, res) => {
   const { skills, position } = req.query;
   const userSkills = skills?.split(",") || [];
   const query = {};
+  const skillAggregationPipeline = [
+    {
+      $unwind: "$skillsRequired",
+    },
+    {
+      $group: {
+        _id: null,
+        allSkills: { $addToSet: "$skillsRequired" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        allSkills: 1,
+      },
+    },
+  ];
+  const allSkillsResult = await JobPostModel.aggregate(
+    skillAggregationPipeline
+  );
+  console.log(allSkillsResult);
   if (userSkills.length !== 0) {
     query.skillsRequired = {
       $in: userSkills.map((skill) => new RegExp(`^${skill}$`, "i")),
@@ -20,7 +41,9 @@ const getAllJobPost = async (req, res) => {
     aboutCompany: 0,
     jobDescription: 0,
   });
-  res.status(StatusCodes.OK).json({ jobs });
+  res
+    .status(StatusCodes.OK)
+    .json({ jobs, allSkills: allSkillsResult[0]?.allSkills || [] });
 };
 
 const createJobPost = async (req, res) => {
@@ -50,6 +73,7 @@ const getJobPost = async (req, res) => {
 const editJobPost = async (req, res) => {
   const { id } = req.params;
   const jobToUpdate = await JobPostModel.findById(id);
+
   if (jobToUpdate.location !== req.body.location) {
     let data = await getCountryCode(req.body.location);
     req.body.countryFlag = data.flag;
@@ -59,9 +83,10 @@ const editJobPost = async (req, res) => {
     ...req.body,
     skillsRequired: req.body.skillsRequired.split(","),
   };
-
-  if (req.file) {
+  if (jobToUpdate.logoUrl && req.file) {
     await cloudinary.v2.uploader.destroy(jobToUpdate.logoUrlPublicId);
+  }
+  if (req.file) {
     const response = await cloudinary.v2.uploader.upload(formateFile(req.file));
     newJobObj.logoUrl = response.secure_url;
     newJobObj.logoUrlPublicId = response.public_id;
@@ -76,6 +101,22 @@ const editJobPost = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ msg: "Job updated successfully", updatedJob });
 };
+const createComment = async (req, res) => {
+  let comment = {};
+  comment.text = req.body.text;
+  comment.commentedBy = req.user.id;
+  const { id } = req.params;
+  const updatedJobComments = await JobPostModel.findByIdAndUpdate(
+    id,
+    {
+      $push: { comments: comment },
+    },
+    { new: true, projection: { comments: 1 } }
+  );
+
+  res.status(StatusCodes.CREATED).json(updatedJobComments);
+};
+
 const deleteJobPost = (req, res) => {
   res.send("delete job post");
 };
@@ -86,4 +127,5 @@ module.exports = {
   getJobPost,
   editJobPost,
   deleteJobPost,
+  createComment,
 };

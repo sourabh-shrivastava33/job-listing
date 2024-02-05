@@ -79,7 +79,7 @@ const DetailsPage = () => {
               <small className="svg-box">
                 <img src={calender} alt="calender" /> duration
               </small>
-              <small className="duration">6 months</small>
+              <small className="duration">{job.jobDuration}</small>
             </p>
           </div>
           <div className="description-container">

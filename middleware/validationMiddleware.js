@@ -3,6 +3,7 @@ const {
   BadRequestError,
   NotFoundError,
   UnAuthorizedError,
+  UnAuthenticatedError,
 } = require("../errors/customError");
 const { JOB_TYPE, LOCATION_PREFERENCE } = require("../utils/constant");
 const mongoose = require("mongoose");
@@ -19,6 +20,8 @@ const withValidationErrors = (validateValue) => {
 
         if (errorMessage[0].startsWith("not authorized"))
           throw new UnAuthorizedError(errorMessage);
+        if (errorMessage[0].startsWith("User is not"))
+          throw new UnAuthenticatedError(errorMessage);
 
         throw new BadRequestError(errorMessage);
       }
@@ -52,14 +55,17 @@ const validateJobInput = withValidationErrors([
 
 const validateParamsId = withValidationErrors([
   param("id").custom(async (value, { req }) => {
+    console.log(req.route.path);
     const isValidMongoId = mongoose.Types.ObjectId.isValid(value);
     if (!isValidMongoId) throw new BadRequestError("Invalid mongodb id");
     const job = await JobPostModel.findById(value);
     if (!job) throw new NotFoundError(`no job with ${value} id`);
     if (req.baseUrl === "/api/v1/jobs" && req.method === "GET") return;
+    if (!req.user) throw new UnAuthenticatedError("User is not authenticated");
+    if (req.route.path === "/comments/:id") return;
     const isOwner = req.user.id === job.createdBy.toString();
     if (!isOwner) {
-      throw new UnAuthorizedError("not authorized to access this route 43");
+      throw new UnAuthorizedError("not authorized to access this route");
     }
   }),
 ]);
